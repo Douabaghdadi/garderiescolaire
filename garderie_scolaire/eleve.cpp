@@ -71,6 +71,7 @@ bool Eleve::ajouter()
 {
     QSqlQuery query;
     QString id_string= QString::number(id);
+    QString m_string= QString::number(moyenne);
           query.prepare("INSERT INTO Eleve (id,nom,prenom,ddn,classe,pension,tel_parent,moyenne) "
                         "VALUES (:id, :nom, :prenom, :ddn, :classe, :pension, :tel_parent, :moyenne)");
           query.bindValue(":id",id_string);
@@ -80,7 +81,7 @@ bool Eleve::ajouter()
           query.bindValue(":classe", classe);
           query.bindValue(":pension",pension);
           query.bindValue(":tel_parent",tel_parent);
-          query.bindValue(":moyenne",moyenne);
+          query.bindValue(":moyenne",m_string);
           return query.exec();
 }
 
@@ -111,7 +112,8 @@ bool Eleve::supprimer(int id)
 bool Eleve::modifier(int id)
 {
     QSqlQuery query;
-    //QString res=QString::number(id);
+    QString res=QString::number(id);
+    QString m_string= QString::number(moyenne);
     query.prepare("UPDATE ELeve SET nom=:nom,prenom=:prenom,ddn=:ddn,classe=:classe,pension=:pension,tel_parent=:tel_parent,moyenne=:moyenne WHERE id=:id");
     query.bindValue(":nom",nom);
     query.bindValue(":prenom",prenom);
@@ -119,8 +121,8 @@ bool Eleve::modifier(int id)
     query.bindValue(":classe",classe);
     query.bindValue(":pension",pension);
     query.bindValue(":tel_parent",tel_parent);
-    query.bindValue(":moyenne",moyenne);
-    query.bindValue(":id",id);
+    query.bindValue(":moyenne",m_string);
+    query.bindValue(":id",res);
 
     return query.exec();
 }

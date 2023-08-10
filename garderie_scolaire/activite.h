@@ -18,7 +18,7 @@ public:
     QDate getDatte();
     bool ajouter();
     bool supprimer(int);
-    bool modifier();
+    bool modifier(int);
     QSqlQueryModel* afficher();
 
 private:
