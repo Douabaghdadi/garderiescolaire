@@ -127,3 +127,62 @@ bool Eleve::modifier(int id)
     return query.exec();
 }
 
+QSqlQueryModel * Eleve::recherche(QString tst)
+{
+
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM eleve WHERE ( nom LIKE '%"+tst+"%' OR prenom LIKE '%"+tst+"%' OR classe LIKE '%"+tst+"%' ) ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("ddn"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("classe"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("pension"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("tel_parent"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
+return model;
+}
+QSqlQueryModel * Eleve::Triparnom(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM eleve ORDER BY nom  "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("ddn"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("classe"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("pension"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("tel_parent"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
+    return model;
+}
+QSqlQueryModel * Eleve::TriClasse(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM eleve ORDER BY classe "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("ddn"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("classe"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("pension"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("tel_parent"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
+
+    return model;
+}
+QSqlQueryModel * Eleve::TriMoyenne(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM eleve ORDER BY moyenne "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("prenom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("ddn"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("classe"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("pension"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("tel_parent"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
+
+    return model;
+}

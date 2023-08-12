@@ -66,6 +66,7 @@ bool Activite::ajouter()
 {
     QSqlQuery query;
     QString id_string= QString::number(id);
+    QString prix_string= QString::number(prix);
           query.prepare("INSERT INTO Activite (id,titre,description,type,lieu,datte,prix) "
                         "VALUES (:id, :titre, :description, :type, :lieu, :datte, :prix)");
           query.bindValue(":id",id_string);
@@ -74,7 +75,7 @@ bool Activite::ajouter()
           query.bindValue(":type", type);
           query.bindValue(":lieu", lieu);
           query.bindValue(":datte",datte);
-          query.bindValue(":prix",prix);
+          query.bindValue(":prix",prix_string);
           return query.exec();
 }
 
@@ -104,15 +105,16 @@ bool Activite::supprimer(int id)
 bool Activite::modifier(int id)
 {
     QSqlQuery query;
-    //QString res=QString::number(id);
+    QString res=QString::number(id);
+     QString prix_string= QString::number(prix);
     query.prepare("UPDATE Activite SET titre=:titre,description=:description,type=:type,lieu=:lieu,datte=:datte,prix=:prix WHERE id=:id");
     query.bindValue(":titre",titre);
     query.bindValue(":description",description);
     query.bindValue(":type",type);
     query.bindValue(":lieu",lieu);
     query.bindValue(":datte",datte);
-    query.bindValue(":prix",prix);
-    query.bindValue(":id",id);
+    query.bindValue(":prix",prix_string);
+    query.bindValue(":id",res);
 
     return query.exec();
 }

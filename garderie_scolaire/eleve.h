@@ -21,6 +21,10 @@ public:
     bool supprimer(int);
     bool modifier(int);
     QSqlQueryModel* afficher();
+     QSqlQueryModel * recherche(QString tst);
+     QSqlQueryModel * Triparnom(QString tst);
+    QSqlQueryModel * TriMoyenne(QString tst);
+    QSqlQueryModel * TriClasse(QString tst);
 
 private:
     int id;
