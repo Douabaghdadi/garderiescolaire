@@ -119,4 +119,65 @@ bool Activite::modifier(int id)
     return query.exec();
 }
 
+QSqlQueryModel * Activite::recherche(QString tst)
+{
+
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM Activite WHERE ( titre LIKE '%"+tst+"%' OR type LIKE '%"+tst+"%' OR lieu LIKE '%"+tst+"%' ) ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("titre"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("description"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("type"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("lieu"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("datte"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("prix"));
+return model;
+}
+
+QSqlQueryModel * Activite::Tripartitre(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM Activite ORDER BY titre  "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("titre"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("description"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("type"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("lieu"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("datte"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("prix"));
+
+    return model;
+}
+
+QSqlQueryModel * Activite::TriDate(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM Activite ORDER BY datte  "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("titre"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("description"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("type"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("lieu"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("datte"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("prix"));
+
+    return model;
+}
+
+QSqlQueryModel * Activite::TriPrix(QString tst)
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM Activite ORDER BY prix  "+tst);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("titre"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("description"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("type"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("lieu"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("datte"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("prix"));
+
+    return model;
+}
+
+
 

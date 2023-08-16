@@ -3,7 +3,7 @@
 #include <QString>
 #include <QSqlQueryModel>
 #include <QDate>
-
+#include<vector>
 class Eleve
 {
 public:
@@ -25,6 +25,7 @@ public:
      QSqlQueryModel * Triparnom(QString tst);
     QSqlQueryModel * TriMoyenne(QString tst);
     QSqlQueryModel * TriClasse(QString tst);
+
 
 private:
     int id;

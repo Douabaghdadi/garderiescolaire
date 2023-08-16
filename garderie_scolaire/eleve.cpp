@@ -142,6 +142,7 @@ QSqlQueryModel * Eleve::recherche(QString tst)
     model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
 return model;
 }
+
 QSqlQueryModel * Eleve::Triparnom(QString tst)
 {
     QSqlQueryModel *model=new QSqlQueryModel();
@@ -156,6 +157,7 @@ QSqlQueryModel * Eleve::Triparnom(QString tst)
     model->setHeaderData(7, Qt::Horizontal, QObject::tr("moyenne"));
     return model;
 }
+
 QSqlQueryModel * Eleve::TriClasse(QString tst)
 {
     QSqlQueryModel *model=new QSqlQueryModel();
@@ -186,3 +188,5 @@ QSqlQueryModel * Eleve::TriMoyenne(QString tst)
 
     return model;
 }
+
+

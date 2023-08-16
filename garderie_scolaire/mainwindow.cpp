@@ -183,17 +183,7 @@ void MainWindow::on_pushButton_6_clicked()
                                         "Click Cancel to exit."), QMessageBox::Cancel); }
 }
 
-void MainWindow::on_pushButton_7_clicked()
-{
-    QString test=ui->search->text();
-          if (test.isEmpty()) {
-              QMessageBox::information(this, tr("Champ vide"),
-                  tr("Entrer une valeur."));
-              return;
-          } else {
-          ui->tableView->setModel(etmp.recherche(test));
-          }
-}
+
 
 void MainWindow::on_pushButton_8_clicked()
 {
@@ -212,4 +202,207 @@ void MainWindow::on_pushButton_8_clicked()
                    ui->tableView->setModel(etmp.TriMoyenne(tst));
                    break;
                }
+}
+
+
+
+
+
+
+
+void MainWindow::on_trier_A_clicked()
+{
+    QString tst;
+               if (ui->radioButton_A->isChecked()) tst="ASC";
+               else if (ui->radioButton_D->isChecked()) tst="DESC";
+
+               switch (ui->comboBox_A->currentIndex()) {
+               case 0:
+                   ui->tableView_2->setModel(atmp.Tripartitre(tst));
+                   break;
+               case 1:
+                   ui->tableView_2->setModel(atmp.TriDate(tst));
+                   break;
+               case 2:
+                   ui->tableView_2->setModel(atmp.TriPrix(tst));
+                   break;
+               }
+}
+
+void MainWindow::on_pushButton_9_clicked()
+{
+    QSqlQueryModel * model= new QSqlQueryModel();
+           model->setQuery("SELECT moyenne FROM eleve WHERE  moyenne>15 ");
+           float counta=model->rowCount();
+           model->setQuery("SELECT moyenne FROM eleve WHERE  moyenne<15 AND moyenne>10 ");
+           float countc=model->rowCount();
+           model->setQuery("SELECT moyenne FROM eleve WHERE  moyenne<10 ");
+           float countp=model->rowCount();
+
+           float total=counta+countp+countc;
+
+                   QPieSeries *series = new QPieSeries();
+                   series->append("Supérieur à 15",counta);
+                   series->append("entre 15 et 10",countc);
+                   series->append("inférieur à 10",countp);
+
+                   if (counta!=0)
+                   {QPieSlice *slice = series->slices().at(0);
+                       slice->setLabel("Supérieur à 15 "+QString("%1%").arg(100*slice->percentage(),3,'f',1));
+                       slice->setLabelVisible();
+                       slice->setPen(QPen(Qt::black));}
+                   if ( countc!=0)
+                   {
+                       // Add label, explode and define brush for 2nd slice
+                       QPieSlice *slice1 = series->slices().at(1);
+                       //slice1->setExploded();
+                       slice1->setLabel("entre 15 et 10 "+QString("%1%").arg(100*slice1->percentage(),3,'f',1));
+                       slice1->setLabelVisible();
+                       slice1->setBrush(QColor(Qt::cyan));
+                   }
+                   if ( countp!=0)
+                   {
+                       // Add label, explode and define brush for 2nd slice
+                       QPieSlice *slice1 = series->slices().at(2);
+                       //slice1->setExploded();
+                       slice1->setLabel("inférieur à 10 "+QString("%1%").arg(100*slice1->percentage(),3,'f',1));
+                       slice1->setLabelVisible();
+                       slice1->setBrush(QColor(Qt::red));
+                   }
+
+
+                   // Create the chart widget
+                   QChart *chart = new QChart();
+                   // Add data to chart with title and hide legend
+                   chart->addSeries(series);
+                   chart->setTitle("Totale eleves "+ QString::number(total));
+
+                   // Used to display the chart
+                   QChartView *chartView = new QChartView(chart);
+                   chartView->setRenderHint(QPainter::Antialiasing);
+                   chartView->resize(1000,500);
+
+
+                   chart->legend()->hide();
+                   chartView->show();
+}
+
+void MainWindow::on_pushButton_10_clicked()
+{
+    QSqlQueryModel * model= new QSqlQueryModel();
+           model->setQuery("SELECT type FROM activite WHERE  type='Sport' ");
+           float counta=model->rowCount();
+           model->setQuery("SSELECT type FROM activite WHERE  type='Intellectuelle'");
+           float countc=model->rowCount();
+           model->setQuery("SELECT type FROM activite WHERE  type='Artistique'");
+           float countp=model->rowCount();
+
+           float total=counta+countp+countc;
+
+                   QPieSeries *series = new QPieSeries();
+                   series->append("Sport",counta);
+                   series->append("Intellectuelle",countc);
+                   series->append("Artistique",countp);
+
+                   if (counta!=0)
+                   {QPieSlice *slice = series->slices().at(0);
+                       slice->setLabel("Sport "+QString("%1%").arg(100*slice->percentage(),3,'f',1));
+                       slice->setLabelVisible();
+                       slice->setPen(QPen(Qt::black));}
+                   if ( countc!=0)
+                   {
+                       // Add label, explode and define brush for 2nd slice
+                       QPieSlice *slice1 = series->slices().at(1);
+                       //slice1->setExploded();
+                       slice1->setLabel("Intellectuelle"+QString("%1%").arg(100*slice1->percentage(),3,'f',1));
+                       slice1->setLabelVisible();
+                       slice1->setBrush(QColor(Qt::cyan));
+                   }
+                   if ( countp!=0)
+                   {
+                       // Add label, explode and define brush for 2nd slice
+                       QPieSlice *slice1 = series->slices().at(2);
+                       //slice1->setExploded();
+                       slice1->setLabel("Artistique"+QString("%1%").arg(100*slice1->percentage(),3,'f',1));
+                       slice1->setLabelVisible();
+                       slice1->setBrush(QColor(Qt::red));
+                   }
+
+
+                   // Create the chart widget
+                   QChart *chart = new QChart();
+                   // Add data to chart with title and hide legend
+                   chart->addSeries(series);
+                   chart->setTitle("Totale Activités "+ QString::number(total));
+
+                   // Used to display the chart
+                   QChartView *chartView = new QChartView(chart);
+                   chartView->setRenderHint(QPainter::Antialiasing);
+                   chartView->resize(1000,500);
+
+
+                   chart->legend()->hide();
+                   chartView->show();
+}
+
+void MainWindow::on_search_textChanged(const QString &arg1)
+{
+    ui->tableView->setModel(etmp.recherche(arg1));
+}
+
+void MainWindow::on_search_A_textChanged(const QString &arg1)
+{
+    ui->tableView_2->setModel(atmp.recherche(arg1));
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    QString strStream;
+                            QTextStream out(&strStream);
+
+                            const int rowCount = ui->tableView->model()->rowCount();
+                            const int columnCount = ui->tableView->model()->columnCount();
+                            QString TT = QDate::currentDate().toString("dd/MM/yyyy");
+                            out <<"<html>\n"
+                                  "<head>\n"
+                                   "<meta Content=\"Text/html; charset=Windows-1251\">\n"
+                                << "<title>Liste eléves<title>\n "
+                                << "</head>\n"
+                                "<body bgcolor=#ffffff link=#5000A0>\n"
+                                "<h1 style=\"text-align: center;\"><strong>Liste eléves"+TT+"</strong></h1>"
+                                "<table style=\"text-align: center; font-size: 20px;\" border=1>\n "
+                                  "</br> </br>";
+
+                            out << "<thead><tr bgcolor=#d6e5ff>";
+                            for (int column = 0; column < columnCount; column++)
+                                if (!ui->tableView->isColumnHidden(column))
+                                    out << QString("<th>%1</th>").arg(ui->tableView->model()->headerData(column, Qt::Horizontal).toString());
+                            out << "</tr></thead>\n";
+
+
+                            for (int row = 0; row < rowCount; row++) {
+                                out << "<tr>";
+                                for (int column = 0; column < columnCount; column++) {
+                                    if (!ui->tableView->isColumnHidden(column)) {
+                                        QString data =ui->tableView->model()->data(ui->tableView->model()->index(row, column)).toString().simplified();
+                                        out << QString("<td bkcolor=0>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
+                                    }
+                                }
+                                out << "</tr>\n";
+                            }
+                            out <<  "</table>\n"
+                                "</body>\n"
+                                "</html>\n";
+
+                            QTextDocument *document = new QTextDocument();
+                            document->setHtml(strStream);
+
+                            QPrinter printer;
+
+                            QPrintDialog *test = new QPrintDialog(&printer, NULL);
+                            if (test->exec() == QDialog::Accepted) {
+                                document->print(&printer);
+                            }
+
+                            delete document;
 }
