@@ -9,6 +9,7 @@ class Activite
 public:
     Activite();
     Activite(int,QString,QString,QString,QString,QDate,float);
+     Activite(QString,QString,QString,QString,QDate,float);
     int getId();
     QString getTitre();
     QString getDescription();
@@ -24,6 +25,8 @@ public:
     QSqlQueryModel * Tripartitre(QString tst);
    QSqlQueryModel * TriDate(QString tst);
    QSqlQueryModel * TriPrix(QString tst);
+   bool ajouter_mod(int,QString,QDateTime);
+       QSqlQueryModel * afficher_mod();
 
 private:
     int id;

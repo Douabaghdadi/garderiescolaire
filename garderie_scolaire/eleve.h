@@ -9,6 +9,7 @@ class Eleve
 public:
     Eleve();
     Eleve(int,QString,QString,QString,QString,QString,QDate,float);
+    Eleve(QString,QString,QString,QString,QString,QDate,float);
     int getId();
     QString getNom();
     QString getPrenom();

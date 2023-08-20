@@ -15,6 +15,7 @@
 #include <QPrinter>
 #include <QPrinterInfo>
 #include <QPrintDialog>
+#include"reservation.h"
 
 
 namespace Ui {
@@ -60,10 +61,23 @@ private slots:
 
     void on_pushButton_7_clicked();
 
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
+    void on_tableView_2_doubleClicked(const QModelIndex &index);
+
+    void on_pushButton_11_clicked();
+
+    void on_pushButton_12_clicked();
+
+    void on_pushButton_13_clicked();
+
+    void on_pushButton_14_clicked();
+
 private:
     Ui::MainWindow *ui;
 Eleve etmp;
 Activite atmp;
+Reservation rtmp;
 };
 
 #endif // MAINWINDOW_H

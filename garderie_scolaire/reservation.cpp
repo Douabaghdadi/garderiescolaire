@@ -15,9 +15,18 @@ Reservation::Reservation()
 
 }
 
-Reservation::Reservation(int id,int id_eleve,int id_activite,QDate datee,QString etat)
+Reservation::Reservation(int id,int id_eleve,int id_activite,QDateTime datee,QString etat)
 {
     this->id=id;
+    this->id_eleve=id_eleve;
+    this->id_activite=id_activite;
+    this->datee=datee;
+    this->etat=etat;
+
+}
+Reservation::Reservation(int id_eleve,int id_activite,QDateTime datee,QString etat)
+{
+
     this->id_eleve=id_eleve;
     this->id_activite=id_activite;
     this->datee=datee;
@@ -41,7 +50,7 @@ int Reservation::getId_activite()
     return id_activite;
 }
 
-QDate Reservation::getDatee()
+QDateTime Reservation::getDatee()
 {
     return datee;
 }
@@ -54,14 +63,15 @@ QString Reservation::getEtat()
 bool Reservation::ajouter()
 {
     QSqlQuery query;
-    QString id_string= QString::number(id);
-          query.prepare("INSERT INTO Rservation (id,id_eleve,id_activite,datee,etat) "
-                        "VALUES (:id, :id_eleve, :id_activite, :datte, :lieu, :datee, :etat)");
-          query.bindValue(":id",id_string);
-          query.bindValue(":titre", id_eleve);
-          query.bindValue(":description", id_activite);
-          query.bindValue(":type", datee);
-          query.bindValue(":lieu", etat);
+    QString id_eleve_s= QString::number(id_eleve);
+     QString id_act_s= QString::number(id_activite);
+          query.prepare("INSERT INTO Reservation (id_eleve,id_activite,datte,etat) "
+                        "VALUES (:id_eleve, :id_activite, :datte, :etat)");
+
+          query.bindValue(":id_eleve", id_eleve_s);
+          query.bindValue(":id_activite", id_act_s);
+          query.bindValue(":datte", datee);
+          query.bindValue(":etat", etat);
           return query.exec();
 }
 
@@ -97,6 +107,16 @@ bool Reservation::modifier(int id)
     query.bindValue(":datee",datee);
     query.bindValue(":etat",etat);
     query.bindValue(":id",id);
+
+    return query.exec();
+}
+bool Reservation::modifier_e(int id)
+{
+    QSqlQuery query;
+    QString res=QString::number(id);
+    query.prepare("UPDATE Reservation SET etat='approuvée' WHERE id=:id");
+
+    query.bindValue(":id",res);
 
     return query.exec();
 }

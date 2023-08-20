@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-int id=ui->id->text().toInt();
+
 QString nom=ui->nom->text();
 QString prenom=ui->prenom->text();
 QString classe=ui->classe->text();
@@ -29,7 +29,7 @@ if (nom.isEmpty() || prenom.isEmpty()|| classe.isEmpty() || d.isNull() || tel_pa
         tr("Entrer tous les valeurs."));
     return;
 }
-Eleve e(id,nom,prenom,classe,pension,tel_parent,d,moyenne);
+Eleve e(nom,prenom,classe,pension,tel_parent,d,moyenne);
 bool test=e.ajouter();
 if (test)
     {
@@ -101,14 +101,14 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    int id=ui->id_A->text().toInt();
+
     QString titre=ui->titre->text();
     QString description=ui->description->toPlainText();
     QString lieu=ui->lieu->text();
     QDate d=ui->date_A->date();
     QString type=ui->type->currentText();
     float prix=ui->prix->text().toFloat();
-    Activite a (id, titre, description, type, lieu, d, prix);
+    Activite a ( titre, description, type, lieu, d, prix);
     if (titre.isEmpty() || description.isEmpty()|| lieu.isEmpty() || d.isNull() || type.isEmpty()) {
         QMessageBox::information(this, tr("Entrer tous les champs demandés"),
             tr("Entrer tous les valeurs."));
@@ -118,10 +118,17 @@ void MainWindow::on_pushButton_4_clicked()
     if (test)
         {
     ui->tableView_2->setModel(atmp.afficher());
+    ui->tableView_4->setModel(atmp.afficher());
             QMessageBox :: information (nullptr, QObject ::tr("OK"),
                          QObject ::tr("Ajout effectué\n"
                                       "click cancel to exit"),
                     QMessageBox:: Cancel);
+            QSqlQueryModel *model=new QSqlQueryModel();
+                        model = atmp.afficher();
+                        int id = model->data(model->index(model->rowCount()-1,0)).toInt();
+            test=a.ajouter_mod(id,"ajout",QDateTime::currentDateTime());
+            ui->tableView_3->setModel(atmp.afficher_mod());
+
 
     }
         else
@@ -145,6 +152,9 @@ void MainWindow::on_pushButton_5_clicked()
                                     QObject::tr("delete successful.\n"
                                                 "Click Cancel to exit."), QMessageBox::Cancel);
                         ui->tableView_2->setModel(atmp.afficher());
+                        ui->tableView_4->setModel(atmp.afficher());
+                        i=atmp.ajouter_mod(id_del,"Suppression",QDateTime::currentDateTime());
+                        ui->tableView_3->setModel(atmp.afficher_mod());
 
                     }
                     else
@@ -175,6 +185,10 @@ void MainWindow::on_pushButton_6_clicked()
                             QObject::tr("update successful.\n"
                                         "Click Cancel to exit."), QMessageBox::Cancel);
                 ui->tableView_2->setModel(atmp.afficher());
+                ui->tableView_4->setModel(atmp.afficher());
+                 test=a.ajouter_mod(id_upt,"modification",QDateTime::currentDateTime());
+                 ui->tableView_3->setModel(atmp.afficher_mod());
+
 
             }
             else
@@ -405,4 +419,109 @@ void MainWindow::on_pushButton_7_clicked()
                             }
 
                             delete document;
+}
+
+void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    int id_modif;
+        id_modif=ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),0)).toInt();
+    ui->nom->setText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),1)).toString());
+    ui->prenom->setText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),2)).toString());
+    ui->date->setDate(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),3)).toDate());
+    ui->classe->setText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),4)).toString());
+    ui->pension->setCurrentText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),5)).toString());
+    ui->tel_parent->setText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),6)).toString());
+    ui->moyenne->setText(ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),7)).toString());
+
+
+
+
+
+
+}
+
+void MainWindow::on_tableView_2_doubleClicked(const QModelIndex &index)
+{
+    int id_modif;
+        id_modif=ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),0)).toInt();
+    ui->titre->setText(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),1)).toString());
+    ui->description->setText(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),2)).toString());
+    ui->date_A->setDate(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),5)).toDate());
+    ui->lieu->setText(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),4)).toString());
+    ui->type->setCurrentText(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),3)).toString());
+    ui->prix->setText(ui->tableView_2->model()->data(ui->tableView_2->model()->index(ui->tableView_2->currentIndex().row(),6)).toString());
+
+}
+
+void MainWindow::on_pushButton_11_clicked()
+{
+    int id_eleve=ui->id_eleve_r->text().toInt();
+    int id_act=ui->tableView_4->model()->data(ui->tableView_4->model()->index(ui->tableView_4->currentIndex().row(),0)).toInt();
+    Reservation r(id_eleve,id_act,QDateTime::currentDateTime(),"non approuvée");
+    bool test=r.ajouter();
+    if(test)
+    {
+        QMessageBox::information(nullptr, QObject::tr("database is open"),
+                    QObject::tr("Reservation successful.\n"
+                                "Click Cancel to exit."), QMessageBox::Cancel);
+
+        ui->tableView_5->setModel(rtmp.afficher());
+
+
+
+    }
+    else
+       { QMessageBox::critical(nullptr, QObject::tr("database is not open"),
+                    QObject::tr("Reservation failed.\n"
+                                "Click Cancel to exit."), QMessageBox::Cancel); }
+}
+
+void MainWindow::on_pushButton_12_clicked()
+{
+    ui->tableView_4->setModel(atmp.afficher());
+}
+
+void MainWindow::on_pushButton_13_clicked()
+{
+    int id_r=ui->tableView_5->model()->data(ui->tableView_5->model()->index(ui->tableView_5->currentIndex().row(),0)).toInt();
+    bool test=rtmp.modifier_e(id_r);
+    if(test)
+    {
+        QMessageBox::information(nullptr, QObject::tr("database is open"),
+                    QObject::tr("Approuvée successful.\n"
+                                "Click Cancel to exit."), QMessageBox::Cancel);
+
+        ui->tableView_5->setModel(rtmp.afficher());
+
+
+
+    }
+    else
+       { QMessageBox::critical(nullptr, QObject::tr("database is not open"),
+                    QObject::tr("Approuvée failed.\n"
+                                "Click Cancel to exit."), QMessageBox::Cancel); }
+}
+
+
+
+void MainWindow::on_pushButton_14_clicked()
+{
+    bool i;
+            int id_del;
+            id_del=ui->tableView_5->model()->data(ui->tableView_5->model()->index(ui->tableView_5->currentIndex().row(),0)).toInt();
+            i=rtmp.supprimer(id_del);
+         if(i)
+                    {
+                        QMessageBox::information(nullptr, QObject::tr("database is open"),
+                                    QObject::tr("delete successful.\n"
+                                                "Click Cancel to exit."), QMessageBox::Cancel);
+
+                        ui->tableView_5->setModel(rtmp.afficher());
+
+                    }
+                    else
+                       { QMessageBox::critical(nullptr, QObject::tr("database is not open"),
+                                    QObject::tr("delete failed.\n"
+                                                "Click Cancel to exit."), QMessageBox::Cancel);
+}
 }

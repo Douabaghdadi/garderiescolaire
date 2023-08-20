@@ -26,6 +26,17 @@ Eleve::Eleve(int id,QString nom,QString prenom,QString classe,QString pension,QS
     this->ddn=D;
     this->moyenne=Moyenne;
 }
+Eleve::Eleve(QString nom,QString prenom,QString classe,QString pension,QString Tel,QDate D,float Moyenne)
+{
+
+    this->nom=nom;
+    this->prenom=prenom;
+    this->classe=classe;
+    this->pension=pension;
+    this->tel_parent=Tel;
+    this->ddn=D;
+    this->moyenne=Moyenne;
+}
 
 int Eleve::getId()
 {
@@ -72,9 +83,9 @@ bool Eleve::ajouter()
     QSqlQuery query;
     QString id_string= QString::number(id);
     QString m_string= QString::number(moyenne);
-          query.prepare("INSERT INTO Eleve (id,nom,prenom,ddn,classe,pension,tel_parent,moyenne) "
-                        "VALUES (:id, :nom, :prenom, :ddn, :classe, :pension, :tel_parent, :moyenne)");
-          query.bindValue(":id",id_string);
+          query.prepare("INSERT INTO Eleve (nom,prenom,ddn,classe,pension,tel_parent,moyenne) "
+                        "VALUES ( :nom, :prenom, :ddn, :classe, :pension, :tel_parent, :moyenne)");
+
           query.bindValue(":nom", nom);
           query.bindValue(":prenom", prenom);
           query.bindValue(":ddn", ddn);

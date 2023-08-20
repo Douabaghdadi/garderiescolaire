@@ -26,6 +26,17 @@ Activite::Activite(int id,QString titre,QString description,QString type,QString
     this->prix=prix;
 
 }
+Activite::Activite(QString titre,QString description,QString type,QString lieu,QDate datte,float prix)
+{
+
+    this->titre=titre;
+    this->description=description;
+    this->type=type;
+    this->lieu=lieu;
+    this->datte=datte;
+    this->prix=prix;
+
+}
 
 int Activite::getId()
 {
@@ -67,9 +78,9 @@ bool Activite::ajouter()
     QSqlQuery query;
     QString id_string= QString::number(id);
     QString prix_string= QString::number(prix);
-          query.prepare("INSERT INTO Activite (id,titre,description,type,lieu,datte,prix) "
-                        "VALUES (:id, :titre, :description, :type, :lieu, :datte, :prix)");
-          query.bindValue(":id",id_string);
+          query.prepare("INSERT INTO Activite (titre,description,type,lieu,datte,prix) "
+                        "VALUES ( :titre, :description, :type, :lieu, :datte, :prix)");
+
           query.bindValue(":titre", titre);
           query.bindValue(":description", description);
           query.bindValue(":type", type);
@@ -176,6 +187,26 @@ QSqlQueryModel * Activite::TriPrix(QString tst)
     model->setHeaderData(5, Qt::Horizontal, QObject::tr("datte"));
     model->setHeaderData(6, Qt::Horizontal, QObject::tr("prix"));
 
+    return model;
+}
+bool Activite::ajouter_mod(int id,QString a,QDateTime d)
+{
+    QSqlQuery query;
+    QString res = QString::number(id);
+    //QString res1=d.toString();
+    query.prepare("INSERT INTO historique(id_activite,type,date_mod)""VALUES (:id_a,:type,:date_mod)");
+    query.bindValue(":id_a",id);
+    query.bindValue(":type",a);
+    query.bindValue(":date_mod",d);
+    return query.exec();
+}
+QSqlQueryModel * Activite::afficher_mod()
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM historique");
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("ID Activité"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("type"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date et Temps"));
     return model;
 }
 

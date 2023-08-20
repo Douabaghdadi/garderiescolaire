@@ -8,6 +8,13 @@ int main(int argc, char *argv[])
     MainWindow w;
     Connection c;
     bool test=c.createconnect();
+    QFile file("C:/Users/Walid/Documents/GitHub/garderiescolaire/garderie_scolaire/Combinear.qss");
+                  file.open(QFile::ReadOnly);
+
+                  QString styleSheet { QLatin1String(file.readAll()) };
+
+                  //setup stylesheet
+                  a.setStyleSheet(styleSheet);
     if(test)
     {w.show();
         QMessageBox::critical(nullptr, QObject::tr("database is open"),
