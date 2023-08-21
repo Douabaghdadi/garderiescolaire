@@ -16,6 +16,7 @@
 #include <QPrinterInfo>
 #include <QPrintDialog>
 #include"reservation.h"
+#include"sms.h"
 
 
 namespace Ui {
@@ -72,6 +73,8 @@ private slots:
     void on_pushButton_13_clicked();
 
     void on_pushButton_14_clicked();
+
+    void on_pushButton_15_clicked();
 
 private:
     Ui::MainWindow *ui;

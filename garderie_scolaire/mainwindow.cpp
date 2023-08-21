@@ -24,6 +24,32 @@ QString tel_parent=ui->tel_parent->text();
 QDate d=ui->date->date();
 QString pension=ui->pension->currentText();
 float moyenne=ui->moyenne->text().toFloat();
+
+QRegularExpression letterRegex("^[a-zA-Z]+$");
+QRegularExpression numberRegex("^[0-9]+$");
+if(!nom.contains(letterRegex))
+{
+    QMessageBox::information(this, tr("Erreur saisie"),
+        tr("Le nom doit contenir que des lettres ."));
+    return;
+}
+if(!prenom.contains(letterRegex))
+{
+    QMessageBox::information(this, tr("Erreur saisie"),
+        tr("Le prenom doit contenir que des lettres ."));
+    return;
+}
+if(!ui->moyenne->text().contains(numberRegex))
+{
+    QMessageBox::information(this, tr("Erreur saisie"),
+        tr("La moyenne doit contenir que des chiffres ."));
+    return;
+}
+if(!tel_parent.contains(numberRegex) || !(tel_parent.length()==8))
+{
+    QMessageBox::information(this, tr("Erreur saisie"),
+        tr("Le num tel doit contenir que des chiffres et de longeur 8 ."));
+    return;}
 if (nom.isEmpty() || prenom.isEmpty()|| classe.isEmpty() || d.isNull() || tel_parent.isEmpty()) {
     QMessageBox::information(this, tr("Entrer tous les champs demandés"),
         tr("Entrer tous les valeurs."));
@@ -38,6 +64,19 @@ ui->tableView->setModel(etmp.afficher());
                      QObject ::tr("Ajout effectué\n"
                                   "click cancel to exit"),
                 QMessageBox:: Cancel);
+        std::string apiKey = "d2c5ddf4";
+               std::string apiSecret = "bM0Z88a9OHbE9hDA";
+               std::string fromNumber = "Vonage";
+               std::string toNumber = ui->tel_parent->text().toStdString();
+               std::string message = "Inscripton%avec%succee%,%bienvenue%sur%notre%plateforme";
+
+               SMS sms(apiKey, apiSecret, fromNumber);
+               if (sms.sendSMS(toNumber, message)) {
+                   printf("SMS sent successfully\n");
+               }
+               else {
+                   printf("Failed to send SMS\n");
+               }
 
 }
     else
@@ -108,6 +147,20 @@ void MainWindow::on_pushButton_4_clicked()
     QDate d=ui->date_A->date();
     QString type=ui->type->currentText();
     float prix=ui->prix->text().toFloat();
+    QRegularExpression letterRegex("^[a-zA-Z]+$");
+    QRegularExpression numberRegex("^[0-9]+$");
+    if(!titre.contains(letterRegex))
+    {
+        QMessageBox::information(this, tr("Erreur saisie"),
+            tr("Le titre doit contenir que des lettres ."));
+        return;
+    }
+    if(!ui->prix->text().contains(numberRegex))
+    {
+        QMessageBox::information(this, tr("Erreur saisie"),
+            tr("Le prix doit contenir que des chiffres ."));
+        return;
+    }
     Activite a ( titre, description, type, lieu, d, prix);
     if (titre.isEmpty() || description.isEmpty()|| lieu.isEmpty() || d.isNull() || type.isEmpty()) {
         QMessageBox::information(this, tr("Entrer tous les champs demandés"),
@@ -524,4 +577,9 @@ void MainWindow::on_pushButton_14_clicked()
                                     QObject::tr("delete failed.\n"
                                                 "Click Cancel to exit."), QMessageBox::Cancel);
 }
+}
+
+void MainWindow::on_pushButton_15_clicked()
+{
+
 }

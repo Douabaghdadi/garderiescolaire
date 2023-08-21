@@ -26,11 +26,12 @@ public:
      QSqlQueryModel * Triparnom(QString tst);
     QSqlQueryModel * TriMoyenne(QString tst);
     QSqlQueryModel * TriClasse(QString tst);
+    QString tel_parent;
 
 
 private:
     int id;
-    QString nom,prenom,classe,pension,tel_parent;
+    QString nom,prenom,classe,pension;
     QDate ddn;
     float moyenne;
 };
