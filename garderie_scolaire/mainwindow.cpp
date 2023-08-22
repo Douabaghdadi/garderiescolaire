@@ -33,6 +33,7 @@ if(!nom.contains(letterRegex))
         tr("Le nom doit contenir que des lettres ."));
     return;
 }
+
 if(!prenom.contains(letterRegex))
 {
     QMessageBox::information(this, tr("Erreur saisie"),
@@ -68,7 +69,7 @@ ui->tableView->setModel(etmp.afficher());
                std::string apiSecret = "bM0Z88a9OHbE9hDA";
                std::string fromNumber = "Vonage";
                std::string toNumber = ui->tel_parent->text().toStdString();
-               std::string message = "Inscripton%avec%succee%,%bienvenue%sur%notre%plateforme";
+               std::string message = "Succes";
 
                SMS sms(apiKey, apiSecret, fromNumber);
                if (sms.sendSMS(toNumber, message)) {
@@ -581,5 +582,52 @@ void MainWindow::on_pushButton_14_clicked()
 
 void MainWindow::on_pushButton_15_clicked()
 {
+    QString strStream;
+                            QTextStream out(&strStream);
 
+                            const int rowCount = ui->tableView_2->model()->rowCount();
+                            const int columnCount = ui->tableView_2->model()->columnCount();
+                            QString TT = QDate::currentDate().toString("dd/MM/yyyy");
+                            out <<"<html>\n"
+                                  "<head>\n"
+                                   "<meta Content=\"Text/html; charset=Windows-1251\">\n"
+                                << "<title>Liste des activités<title>\n "
+                                << "</head>\n"
+                                "<body bgcolor=#ffffff link=#5000A0>\n"
+                                "<h1 style=\"text-align: center;\"><strong>Liste des activités"+TT+"</strong></h1>"
+                                "<table style=\"text-align: center; font-size: 20px;\" border=1>\n "
+                                  "</br> </br>";
+
+                            out << "<thead><tr bgcolor=#d6e5ff>";
+                            for (int column = 0; column < columnCount; column++)
+                                if (!ui->tableView_2->isColumnHidden(column))
+                                    out << QString("<th>%1</th>").arg(ui->tableView_2->model()->headerData(column, Qt::Horizontal).toString());
+                            out << "</tr></thead>\n";
+
+
+                            for (int row = 0; row < rowCount; row++) {
+                                out << "<tr>";
+                                for (int column = 0; column < columnCount; column++) {
+                                    if (!ui->tableView_2->isColumnHidden(column)) {
+                                        QString data =ui->tableView_2->model()->data(ui->tableView_2->model()->index(row, column)).toString().simplified();
+                                        out << QString("<td bkcolor=0>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
+                                    }
+                                }
+                                out << "</tr>\n";
+                            }
+                            out <<  "</table>\n"
+                                "</body>\n"
+                                "</html>\n";
+
+                            QTextDocument *document = new QTextDocument();
+                            document->setHtml(strStream);
+
+                            QPrinter printer;
+
+                            QPrintDialog *test = new QPrintDialog(&printer, NULL);
+                            if (test->exec() == QDialog::Accepted) {
+                                document->print(&printer);
+                            }
+
+                            delete document;
 }

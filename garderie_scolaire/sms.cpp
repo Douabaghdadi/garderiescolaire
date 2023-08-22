@@ -23,8 +23,10 @@ bool SMS::sendSMS(std::string toNumber, std::string message) {
 
     if (curl) {
 
-        std::string url = "https://rest.nexmo.com/sms/json?api_key=d2c5ddf4&api_secret=bM0Z88a9OHbE9hDA&from=Vonage&to=+21621862359&text=Bienvenue%sur%notre%plateforme";
-
+        std::string url = "https://rest.nexmo.com/sms/json?api_key=d2c5ddf4&api_secret=bM0Z88a9OHbE9hDA";
+        url += "&from=" + m_fromNumber;
+        url += "&to=+216" + toNumber;
+        url += "&text=" + message;
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writecallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
